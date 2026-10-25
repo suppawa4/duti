@@ -26,7 +26,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group"
-import { useTopLayerPortalContainer } from "@/components/ui/top-layer-portal"
+import { useTopLayerRef } from "@/components/ui/top-layer-portal"
 import { ChevronDownIcon, SearchIcon, CheckIcon } from "lucide-react"
 
 function Select<T extends object, M extends "single" | "multiple" = "single">({
@@ -135,7 +135,7 @@ function SelectPopover({
   placement = "bottom start",
   offset = 4,
   crossOffset = 0,
-  UNSTABLE_portalContainer,
+  ref,
   ...props
 }: Omit<
   React.ComponentProps<typeof PopoverPrimitive>,
@@ -143,14 +143,9 @@ function SelectPopover({
 > & {
   className?: string
   children?: React.ReactNode
+  ref?: React.Ref<HTMLElement>
 }) {
-  const defaultPortalContainer = useTopLayerPortalContainer()
-  const portalContainer =
-    UNSTABLE_portalContainer ?? defaultPortalContainer
-
-  if (!portalContainer) {
-    return null
-  }
+  const topLayerRef = useTopLayerRef(ref)
 
   return (
     <PopoverPrimitive
@@ -158,7 +153,7 @@ function SelectPopover({
       placement={placement}
       offset={offset}
       crossOffset={crossOffset}
-      UNSTABLE_portalContainer={portalContainer}
+      ref={topLayerRef}
       className={cn("relative isolate z-50 w-(--trigger-width) min-w-36 origin-(--trigger-anchor-point) overflow-hidden rounded-lg bg-popover text-popover-foreground shadow-md ring-1 ring-foreground/10 duration-100 data-entering:animate-in data-entering:fade-in-0 data-entering:zoom-in-95 data-exiting:animate-out data-exiting:fade-out-0 data-exiting:zoom-out-95 data-[placement=bottom]:slide-in-from-top-2 data-[placement=left]:slide-in-from-right-2 data-[placement=right]:slide-in-from-left-2 data-[placement=top]:slide-in-from-bottom-2 **:data-[slot$=-item]:data-focused:bg-foreground/10", className )}
       {...props}
     >

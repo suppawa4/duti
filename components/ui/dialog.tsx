@@ -14,6 +14,7 @@ import {
 } from "react-aria-components"
 
 import { Button } from "@/components/ui/button"
+import { shouldCloseModalOnInteractOutside } from "@/components/ui/top-layer-portal"
 import { XIcon } from "lucide-react"
 
 function DialogTrigger({ ...props }: DialogTriggerPrimitiveProps) {
@@ -41,6 +42,7 @@ function DialogClose({
 function DialogOverlay({
   className,
   children,
+  shouldCloseOnInteractOutside,
   ...props
 }: Omit<ModalOverlayPrimitiveProps, "className" | "children"> & {
   className?: string
@@ -53,6 +55,9 @@ function DialogOverlay({
         "fixed inset-0 isolate z-50 bg-black/10 duration-100 data-entering:animate-in data-entering:fade-in-0 data-exiting:animate-out data-exiting:fade-out-0 supports-backdrop-filter:backdrop-blur-xs",
         className
       )}
+      shouldCloseOnInteractOutside={(target) =>
+        shouldCloseModalOnInteractOutside(target, shouldCloseOnInteractOutside)
+      }
       {...props}
     >
       {children}
