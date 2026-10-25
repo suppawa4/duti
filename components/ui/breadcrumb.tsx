@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import NextLink from "next/link"
 import { cn } from "cn"
 import {
   Breadcrumb as BreadcrumbPrimitive,
@@ -77,15 +76,7 @@ function BreadcrumbLink({ className, render, ...props }: LinkProps) {
     <LinkPrimitive
       data-slot="breadcrumb-link"
       className={cn("transition-colors hover:text-foreground", className)}
-      render={
-        render ??
-        ((linkProps) =>
-          "href" in linkProps && linkProps.href ? (
-            <NextLink {...linkProps} />
-          ) : (
-            <span {...linkProps} />
-          ))
-      }
+      render={render}
       {...props}
     />
   )
