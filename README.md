@@ -388,6 +388,29 @@ Before deploying dependent code:
 5. Verify `/api/v1/health`, `/api/docs`, and an API-key request against the
    deployed origin.
 
+## Troubleshooting
+
+### Google sign-in redirects to localhost after deployment
+
+Supabase only honors the `redirectTo` sent by the app when it is in the project's
+redirect allowlist. Otherwise it falls back to the project's **Site URL** — often
+`http://localhost:3000`.
+
+In Supabase → **Authentication → URL Configuration**:
+
+- Set **Site URL** to `https://<your-domain>`.
+- Add `https://<your-domain>/auth/callback` to **Redirect URLs**.
+- Keep `http://localhost:3000/auth/callback` for local development.
+- For Vercel previews, add the exact preview URL or a wildcard such as
+  `https://*-<team>.vercel.app/**`.
+
+Also set `NEXT_PUBLIC_APP_URL=https://<your-domain>` in Vercel and redeploy.
+`NEXT_PUBLIC_*` values are inlined at build time. Google Cloud's authorized
+redirect URI remains the Supabase callback:
+`https://<project-ref>.supabase.co/auth/v1/callback`.
+
+After saving, clear the site cookies or use an incognito window and retry.
+
 ## Known limitations
 
 - Google OAuth requires the hosted Supabase Google provider and callback
